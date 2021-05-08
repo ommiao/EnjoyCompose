@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            EnjoyComposeTheme {
+            val viewModel: WeViewModel = viewModel()
+            EnjoyComposeTheme(viewModel.theme) {
                 Column {
-                    val viewModel: WeViewModel = viewModel()
                     val pagerState: PagerState = kotlin.run {
                         remember() {
                             PagerState(maxPage = 3)

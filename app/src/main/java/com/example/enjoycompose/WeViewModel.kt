@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.enjoycompose.ui.theme.EnjoyComposeTheme
 import com.rengwuxian.wecompose.data.Chat
 import com.rengwuxian.wecompose.data.Msg
 import com.rengwuxian.wecompose.data.User
 
 class WeViewModel : ViewModel() {
 
+    var theme by mutableStateOf(EnjoyComposeTheme.Theme.Light)
     var selectedTab by mutableStateOf(0)
 
     var chats by mutableStateOf(
