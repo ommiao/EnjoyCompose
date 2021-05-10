@@ -2,6 +2,7 @@ package com.example.enjoycompose.ui.widget
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.enjoycompose.WeViewModel
 import com.example.enjoycompose.ui.theme.EnjoyComposeTheme
 import com.rengwuxian.wecompose.data.Chat
@@ -52,7 +54,12 @@ fun ChatList(chats: List<Chat>) {
 
 @Composable
 private fun ChatListItem(chat: Chat) {
-    Row {
+    val viewModel: WeViewModel = viewModel()
+    Row(modifier = Modifier
+        .clickable {
+        viewModel.startChat(chat) }
+//        .fillMaxSize()
+    ) {
         Image(
             painter = painterResource(id = chat.friend.avatar),
             contentDescription = chat.friend.name,

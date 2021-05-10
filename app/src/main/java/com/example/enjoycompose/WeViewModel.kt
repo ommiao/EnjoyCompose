@@ -40,4 +40,16 @@ class WeViewModel : ViewModel() {
         )
     )
 
+    var currentChat: Chat? by mutableStateOf(null)
+    var chatting by mutableStateOf(false)
+
+    fun startChat(chat: Chat) {
+        chatting = true
+        currentChat = chat
+    }
+
+    fun endChat() {
+        chatting = false
+    }
+
 }
