@@ -52,4 +52,8 @@ class WeViewModel : ViewModel() {
         chatting = false
     }
 
+    fun boom(chat: Chat) {
+        chat.msgs.add(Msg(User.Me, "炸你"))
+    }
+
 }

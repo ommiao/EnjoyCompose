@@ -3,6 +3,7 @@ package com.example.enjoycompose.ui.widget
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,7 +19,6 @@ import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,14 +49,15 @@ fun ChatPage() {
                     ChatMsgItem(msg)
                 }
             }
-            ChatBottomBar()
+            ChatBottomBar({
+                viewModel.boom(currentChat)
+            })
         }
     }
 }
 
-@Preview
 @Composable
-fun ChatBottomBar() {
+fun ChatBottomBar(onBoom: () -> Unit) {
     Row(
         Modifier.background(color = EnjoyComposeTheme.colors.bottomBar).padding(10.dp)
     ) {
@@ -74,7 +75,12 @@ fun ChatBottomBar() {
                 .height(32.dp)
                 .align(Alignment.CenterVertically)
         )
-        Text(text = "\uD83D\uDCA3", fontSize = 28.sp, modifier = Modifier.align(Alignment.CenterVertically))
+        Text(text = "\uD83D\uDCA3", fontSize = 28.sp,
+            modifier =
+            Modifier
+                .align(Alignment.CenterVertically)
+                .clickable(onClick = onBoom)
+        )
         Icon(painterResource(R.drawable.ic_add), "add",
             Modifier
                 .padding(start = 10.dp)
