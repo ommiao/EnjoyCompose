@@ -7,19 +7,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.RoundRect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.enjoycompose.R
 import com.example.enjoycompose.WeViewModel
 import com.example.enjoycompose.ui.theme.EnjoyComposeTheme
 import com.rengwuxian.wecompose.data.Msg
@@ -41,12 +44,44 @@ fun ChatPage() {
             WeTopBar(title = currentChat.friend.name, onBack = {
                 viewModel.endChat()
             })
-            LazyColumn {
+            LazyColumn(Modifier.weight(1f)) {
                 items(currentChat.msgs) { msg ->
                     ChatMsgItem(msg)
                 }
             }
+            ChatBottomBar()
         }
+    }
+}
+
+@Preview
+@Composable
+fun ChatBottomBar() {
+    Row(
+        Modifier.background(color = EnjoyComposeTheme.colors.bottomBar).padding(10.dp)
+    ) {
+        Icon(painterResource(R.drawable.ic_voice), "voice",
+            Modifier
+                .size(24.dp)
+                .align(Alignment.CenterVertically),
+            tint = EnjoyComposeTheme.colors.icon
+        )
+        Spacer(Modifier
+                .padding(horizontal = 10.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = EnjoyComposeTheme.colors.textFieldBackground)
+                .weight(1f)
+                .height(32.dp)
+                .align(Alignment.CenterVertically)
+        )
+        Text(text = "\uD83D\uDCA3", fontSize = 28.sp, modifier = Modifier.align(Alignment.CenterVertically))
+        Icon(painterResource(R.drawable.ic_add), "add",
+            Modifier
+                .padding(start = 10.dp)
+                .size(24.dp)
+                .align(Alignment.CenterVertically),
+            tint = EnjoyComposeTheme.colors.icon
+        )
     }
 }
 
