@@ -1,15 +1,29 @@
 package com.example.enjoycompose.ui.widget
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.enjoycompose.WeViewModel
 import com.example.enjoycompose.ui.theme.EnjoyComposeTheme
+import com.rengwuxian.wecompose.data.Msg
+import com.rengwuxian.wecompose.data.User
 import kotlin.math.roundToInt
 
 @Composable
@@ -22,11 +36,94 @@ fun ChatPage() {
             .percentOffsetX(percentOffset.value)
             .background(EnjoyComposeTheme.colors.background)
             .fillMaxSize()
-    ){
-        if(currentChat != null){
+    ) {
+        if (currentChat != null) {
             WeTopBar(title = currentChat.friend.name, onBack = {
                 viewModel.endChat()
             })
+            LazyColumn {
+                items(currentChat.msgs) { msg ->
+                    ChatMsgItem(msg)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ChatMsgItem(msg: Msg) {
+    if(msg.from == User.Me){
+        Row(horizontalArrangement = Arrangement.End,
+        modifier = Modifier.fillMaxWidth()) {
+            val bubbleColor = EnjoyComposeTheme.colors.bubbleMe
+            Text(
+                text = msg.text,
+                fontSize = 16.sp,
+                color = EnjoyComposeTheme.colors.textPrimaryMe,
+                modifier = Modifier
+                    .padding(start = 18.dp, end = 0.dp, top = 8.dp, bottom = 8.dp)
+                    .drawBehind {
+                        val bubblePath = Path().apply {
+                            val roundRect = RoundRect(
+                                0f, 0f, size.width - 10.dp.toPx(), size.height,
+                                4.dp.toPx(), 4.dp.toPx()
+                            )
+                            addRoundRect(roundRect)
+                            moveTo(size.width - 10.dp.toPx(), 10.dp.toPx())
+                            lineTo(size.width, 15.dp.toPx())
+                            lineTo(size.width - 10.dp.toPx(), 20.dp.toPx())
+                            close()
+                        }
+                        drawPath(bubblePath, bubbleColor)
+                    }
+                    .padding(8.dp)
+                    .padding(end = 10.dp)
+            )
+            Image(
+                painter = painterResource(id = msg.from.avatar),
+                contentDescription = msg.from.name,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(48.dp)
+                    .clip(
+                        RoundedCornerShape(4.dp)
+                    )
+            )
+        }
+    } else {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            val bubbleColor = EnjoyComposeTheme.colors.bubbleOthers
+            Image(
+                painter = painterResource(id = msg.from.avatar),
+                contentDescription = msg.from.name,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(4.dp))
+            )
+            Text(
+                text = msg.text,
+                fontSize = 16.sp,
+                color = EnjoyComposeTheme.colors.textPrimary,
+                modifier = Modifier
+                    .padding(start = 0.dp, end = 18.dp, top = 8.dp, bottom = 8.dp)
+                    .drawBehind {
+                        val bubblePath = Path().apply {
+                            val roundRect = RoundRect(
+                                10.dp.toPx(), 0f, size.width, size.height,
+                                4.dp.toPx(), 4.dp.toPx()
+                            )
+                            addRoundRect(roundRect)
+                            moveTo(10.dp.toPx(), 10.dp.toPx())
+                            lineTo(0f, 15.dp.toPx())
+                            lineTo(10.dp.toPx(), 20.dp.toPx())
+                            close()
+                        }
+                        drawPath(bubblePath, bubbleColor)
+                    }
+                    .padding(8.dp)
+                    .padding(start = 10.dp)
+            )
         }
     }
 }

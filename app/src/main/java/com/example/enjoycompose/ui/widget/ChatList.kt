@@ -68,6 +68,7 @@ private fun ChatListItem(chat: Chat) {
                 .size(48.dp)
                 .unread(!chat.msgs.last().read, EnjoyComposeTheme.colors.badge)
                 .clip(RoundedCornerShape(4.dp))
+
         )
         Column(Modifier.padding(8.dp)) {
             Row() {
@@ -106,7 +107,6 @@ fun Modifier.unread(show: Boolean, badgeColor: Color) : Modifier = this.drawWith
     }
 
 }
-
 
 @Preview
 @Composable
